@@ -12,6 +12,17 @@ public class TennisGame {
     private int playerOne = 0;
     private int playerTwo = 0;
 
+    State state = new State();
+
+    public void playerOneScores() {
+        playerOne++;
+    }
+
+    public void playerTwoScores() {
+        playerTwo++;
+    }
+
+
     String score(int i) {
         switch (i) {
             case 0:
@@ -28,17 +39,18 @@ public class TennisGame {
 
     public String score() {
         String score = "love all";
-        if (Math.abs(playerOne - playerTwo) > 1 && playerOne + playerTwo > 4) {
+        if (state.isWinner()) {
             score = "winner " + obtainLeadingPayer();
-        } else if (playerOne != playerTwo && playerOne + playerTwo > 5) {
+        } else if (state.isAdvantage()) {
             score = "advantage " + obtainLeadingPayer();
-        } else if (playerOne == playerTwo && playerOne >= 3) {
+        } else if (state.isDeuce()) {
             score = "deuce";
         } else if (playerOne > 0 || playerTwo > 0) {
             score = score(playerOne) + " " + score(playerTwo);
         }
         return score;
     }
+
 
     private String obtainLeadingPayer() {
         String result = "player ";
@@ -50,11 +62,18 @@ public class TennisGame {
         return result;
     }
 
-    public void playerOneScores() {
-        playerOne++;
+    private class State {
+        private boolean isDeuce() {
+            return playerOne == playerTwo && playerOne >= 3;
+        }
+
+        private boolean isAdvantage() {
+            return playerOne != playerTwo && playerOne + playerTwo > 5;
+        }
+
+        private boolean isWinner() {
+            return Math.abs(playerOne - playerTwo) > 1 && playerOne + playerTwo > 3;
+        }
     }
 
-    public void playerTwoScores() {
-        playerTwo++;
-    }
 }
