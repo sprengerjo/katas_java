@@ -15,30 +15,9 @@ import static org.hamcrest.core.IsEqual.equalTo;
  */
 public class TennisGameTest {
     TennisGame game = null;
-
     @Before
     public void setUp() {
         game = new TennisGame();
-    }
-
-    @Test
-    public void score0MustBeLove() {
-        assertThat(game.score(0), equalTo("love"));
-    }
-
-    @Test
-    public void score1MustBeFifteen() {
-        assertThat(game.score(1), equalTo("fifteen"));
-    }
-
-    @Test
-    public void score2MustBeThirty() {
-        assertThat(game.score(2), equalTo("thirty"));
-    }
-
-    @Test
-    public void score3MustBeFourty() {
-        assertThat(game.score(3), equalTo("fourty"));
     }
 
     @Test
@@ -79,7 +58,7 @@ public class TennisGameTest {
     }
 
     @Test
-    public void winnerPlaywerOne() {
+    public void winnerPlayerOne() {
         scoreMany(4);
         game.playerOneScores();
         game.playerOneScores();
