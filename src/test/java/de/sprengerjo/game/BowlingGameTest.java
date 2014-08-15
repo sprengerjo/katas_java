@@ -1,5 +1,6 @@
 package de.sprengerjo.game;
 
+import static java.util.stream.IntStream.range;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
@@ -11,50 +12,43 @@ import org.junit.Test;
 
 public class BowlingGameTest {
 
-	BowlingGame game = null;
+	BowlingGame g;
 
 	@Before
-	public void setUp() {
-		game = new BowlingGame();
-	}
-
-	private void rollMany(int rolls, int pins) {
-		for (int i = 0; i < rolls; i++) {
-			game.roll(pins);
-		}
+	public void setUp() throws Exception {
+		g = new BowlingGame();
 	}
 
 	@Test
-	public void gutterGameMustScore0() {
-		rollMany(20, 0);
-		assertThat(game.score(), equalTo(0));
+	public void gutterGame() throws Exception {
+		range(0, 20).forEach(a -> g.roll(0));
+		assertThat(g.score(), equalTo(0));
 	}
 
 	@Test
-	public void onePinGamesMustScore20() {
-		rollMany(20, 1);
-		assertThat(game.score(), equalTo(20));
+	public void onePinGames() throws Exception {
+		range(0, 20).forEach(a -> g.roll(1));
+		assertThat(g.score(), equalTo(20));
 	}
 
 	@Test
-	public void spareBonusMustBeAdded() {
-		game.roll(4);
-		game.roll(6);
-		rollMany(18, 4);
-		assertThat(game.score(), equalTo(4 + 6 + 4 + 18 * 4));
+	public void spareBonusMustBeAdded() throws Exception {
+		g.roll(4);
+		g.roll(6);
+		range(2, 20).forEach(a -> g.roll(4));
+		assertThat(g.score(), equalTo(4 + 6 + 4 + 18 * 4));
 	}
 
 	@Test
-	public void strikeBonusMustBeAdded() {
-		game.roll(10);
-		rollMany(18, 4);
-		assertThat(game.score(), equalTo(10 + 4 + 4 + 18 * 4));
+	public void strikeBonusMustBeAdded() throws Exception {
+		g.roll(10);
+		range(2, 20).forEach(a -> g.roll(4));
+		assertThat(g.score(), equalTo(10 + 4 + 4 + 18 * 4));
 	}
 
 	@Test
-	public void perfectGame() {
-		rollMany(12, 10);
-		assertThat(game.score(), equalTo(300));
+	public void perfectGame() throws Exception {
+		range(0, 12).forEach(a -> g.roll(10));
+		assertThat(g.score(), equalTo(300));
 	}
-
 }

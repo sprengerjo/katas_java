@@ -1,49 +1,42 @@
 package de.sprengerjo.game;
 
+import static java.util.stream.IntStream.concat;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.PrimitiveIterator.OfInt;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class BowlingGame {
 
-	List<Integer> scores = new ArrayList<Integer>();
+	private int [] score = new int[21];
+	private int current;
 
 	public void roll(int i) {
-		scores.add(i);
+		score[current++] = i;
 	}
 
 	public int score() {
-		// no possibility to obtain index 
 		AtomicInteger index = new AtomicInteger();
-		return scores.stream()
-				.map((pins) -> pins + calculateBonus(index))
-				.reduce(0, (sum, pins) -> sum + pins);
+		return Arrays.stream(score).map(a -> a + bonus(index)).sum();
 	}
 
-	private int calculateBonus(AtomicInteger i) {
-		int index = i.getAndIncrement();
-		if (isNotLastFrame(index)) {
-			if (isStrike(index)) {
-				return scores.get(index + 1) + scores.get(index + 2);
-			} else if (isSpare(index)) {
-				i.incrementAndGet();
-				return scores.get(index + 2);
+	private int bonus(AtomicInteger index) {
+		int i = index.getAndIncrement();
+		if (i + 1 < score.length) {
+			if (10 == score[i]) {
+				return score[i + 1] + score[i + 2];
+			} else if (10 == score[i] + score[i + 1]) {
+				index.getAndIncrement();
+				return score[i + 2];
 			}
 		}
 		return 0;
 	}
 
-	private boolean isStrike(int index) {
-		return 10 == scores.get(index);
-	}
 
-	private boolean isSpare(int index) {
-		return 10 == scores.get(index) + scores.get(index + 1);
-	}
-
-	private boolean isNotLastFrame(int index) {
-		return index < scores.size() - 3;
-	}
 }
