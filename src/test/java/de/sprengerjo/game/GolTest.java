@@ -22,7 +22,7 @@ public class GolTest {
 
 	@Test
 	public void neighbours() {
-		List<Cell> neighbours = gol.getNeighbours(1, 1);
+		List<Cell> neighbours = gol.getNeighbours(new Cell(1, 1));
 
 		assertThat(
 				neighbours,

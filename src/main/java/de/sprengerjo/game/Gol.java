@@ -4,13 +4,16 @@ import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
+import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class Gol {
 
-	public List<Cell> getNeighbours(int x, int y) {
+	public List<Cell> getNeighbours(Cell cell) {
 		List<Cell> result = new ArrayList<Cell>();
 
 		int[] d = new int[] { -1, 0, 1 };
@@ -18,7 +21,7 @@ public class Gol {
 			for (int dy : d) {
 				if (dx == 0 && dy == 0)
 					continue;
-				result.add(new Cell(x - dx, y - dy));
+				result.add(new Cell(cell.getX() - dx, cell.getY() - dy));
 			}
 		}
 		return result;
@@ -33,8 +36,7 @@ public class Gol {
 
 	public List<Cell> stepper(List<Cell> blinker) {
 		Map<Cell, Long> frequecies = blinker.stream()
-				.map(a -> getNeighbours(a.getX(), a.getY()))
-				.flatMap(b -> b.stream())
+				.flatMap(a -> getNeighbours(a).stream())
 				.collect(groupingBy(c -> c, counting()));
 
 		List<Cell> nextGen = frequecies
@@ -45,4 +47,5 @@ public class Gol {
 
 		return nextGen;
 	}
+
 }
