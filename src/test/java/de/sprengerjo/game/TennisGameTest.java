@@ -1,8 +1,8 @@
 package de.sprengerjo.game;
 
-import org.hamcrest.core.IsEqual;
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -15,7 +15,8 @@ import static org.hamcrest.core.IsEqual.equalTo;
  */
 public class TennisGameTest {
     TennisGame game = null;
-    @Before
+
+    @BeforeEach
     public void setUp() {
         game = new TennisGame();
     }

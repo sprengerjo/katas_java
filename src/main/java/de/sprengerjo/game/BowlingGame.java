@@ -27,7 +27,8 @@ public class BowlingGame {
 
 	private int bonus(AtomicInteger index) {
 		int i = index.getAndIncrement();
-		if (i + 1 < score.length) {
+
+		if ( i < current - 3) {
 			if (10 == score[i]) {
 				return score[i + 1] + score[i + 2];
 			} else if (10 == score[i] + score[i + 1]) {
